@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(authRoutes);
 
 const mongoUri =
-  "mongodb+srv://mehmettalhairmak:d6DfOfRzJsw4m7NJ@backend-local.xewh5ga.mongodb.net/smartnest?retryWrites=true&w=majority";
+  "mongodb+srv://<username>:<password>@backend-local.xewh5ga.mongodb.net/smartnest?retryWrites=true&w=majority";
 
 mongoose.connect(mongoUri);
 
