@@ -1,15 +1,18 @@
 require("./models/User");
+require("./models/House");
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
+const houseRoutes = require("./routes/houseRoutes");
 const requireAuth = require("./middlewares/requireAuth");
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(authRoutes);
+app.use(houseRoutes);
 
 const mongoUri =
   "mongodb+srv://admin:sTC1COvmIgyMWlUB@backend-local.xewh5ga.mongodb.net/smartnest?retryWrites=true&w=majority";

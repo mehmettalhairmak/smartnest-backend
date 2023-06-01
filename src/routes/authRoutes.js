@@ -1,6 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const { validationResult } = require("express-validator");
 
 const User = mongoose.model("User");
 
@@ -10,16 +11,27 @@ router.post("/signup", async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
     const user = new User({ email, password });
     await user.save();
 
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.ACCESS_TOKEN_SECRET
-    );
+    // JWT oluşturma
+    const payload = {
+      userId: user._id,
+    };
+
+    const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: "1h",
+    });
+
     res.send({ token });
   } catch (error) {
-    return res.status(422).send(error.message);
+    return res.status(500).send({ error: "Server error" });
   }
 });
 
@@ -38,10 +50,15 @@ router.post("/signin", async (req, res) => {
 
   try {
     await user.comparePassword(password);
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.ACCESS_TOKEN_SECRET
-    );
+
+    const payload = {
+      userId: user._id,
+    };
+
+    const token = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+      expiresIn: "1h",
+    });
+
     res.send({ token });
   } catch (error) {
     return res.status(422).send({ error: "Invalid password or email." });
