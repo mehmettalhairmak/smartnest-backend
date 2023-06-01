@@ -1,4 +1,5 @@
 require("./models/User");
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -11,7 +12,7 @@ app.use(bodyParser.json());
 app.use(authRoutes);
 
 const mongoUri =
-  "mongodb+srv://<username>:<password>@backend-local.xewh5ga.mongodb.net/smartnest?retryWrites=true&w=majority";
+  "mongodb+srv://admin:sTC1COvmIgyMWlUB@backend-local.xewh5ga.mongodb.net/smartnest?retryWrites=true&w=majority";
 
 mongoose.connect(mongoUri);
 

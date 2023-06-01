@@ -10,24 +10,18 @@ module.exports = (req, res, next) => {
     return res.status(401).send({ error: "You must be logged in. " });
   }
 
-  console.log(authorization);
-
   const token = authorization.replace("Bearer ", "");
 
   console.log(token);
 
-  jwt.verify(
-    token,
-    "pigederdandenkleminegorekarekok35",
-    async (error, payload) => {
-      if (error) {
-        return res.status(401).send({ error: "You must be logged in." });
-      }
-
-      const { userId } = payload;
-      const user = await User.findById(userId);
-      req.user = user;
-      next();
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (error, payload) => {
+    if (error) {
+      return res.status(401).send({ error: "You must be logged in." });
     }
-  );
+
+    const { userId } = payload;
+    const user = await User.findById(userId);
+    req.user = user;
+    next();
+  });
 };

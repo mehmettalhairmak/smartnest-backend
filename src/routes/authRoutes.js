@@ -15,7 +15,7 @@ router.post("/signup", async (req, res) => {
 
     const token = jwt.sign(
       { userId: user._id },
-      "pigederdandenkleminegorekarekok35"
+      process.env.ACCESS_TOKEN_SECRET
     );
     res.send({ token });
   } catch (error) {
@@ -40,7 +40,7 @@ router.post("/signin", async (req, res) => {
     await user.comparePassword(password);
     const token = jwt.sign(
       { userId: user._id },
-      "pigederdandenkleminegorekarekok35"
+      process.env.ACCESS_TOKEN_SECRET
     );
     res.send({ token });
   } catch (error) {
